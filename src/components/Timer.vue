@@ -6,14 +6,12 @@
       <button @click="longBreakTime">Long Break</button>
     </div>
     <h1 class="time">{{minutes}} : {{seconds}}</h1>
-    <h2 @click="start">START</h2>
-    <h2 @click="stop">STOP</h2>
-    <h2 @click="reset">RESET</h2>
+    <h2 @click="start" class="start">START</h2>
+    <h2 @click="stop" class="stop">STOP</h2>
   </div>
 </template>
 
 <script>
-import { setInterval } from "timers";
 export default {
   name: "Timer",
   data() {
@@ -28,16 +26,19 @@ export default {
   },
   methods: {
     pomodoroTime: function() {
+        this.stop();
       this.minutes = 25;
       this.seconds = 0;
       this.setTimer();
     },
     shortBreakTime: function() {
+        this.stop();
       this.minutes = 2;
       this.seconds = 0;
       this.setTimer();
     },
     longBreakTime: function() {
+        this.stop();
       this.minutes = 5;
       this.seconds = 0;
       this.setTimer();
@@ -46,44 +47,35 @@ export default {
       this.isRunning = true;
       this.timerCalc(this.timer);
     },
+    timerCalc: function(duration) {
+      this.timer = duration;
+      this.duration = duration;
+      var _this = this;
+      this.timerId = setInterval(function() {
+        _this.minutes = parseInt(_this.timer / 60, 10);
+        _this.seconds = parseInt(_this.timer % 60, 10);
+
+        _this.minutes =
+          _this.minutes < 10 ? "0" + _this.minutes : _this.minutes;
+        _this.seconds =
+          _this.seconds < 10 ? "0" + _this.seconds : _this.seconds;
+
+        if (--_this.timer < 0) {
+          _this.timer = _this.duration;
+          _this.reset();
+        }
+      }, 1000);
+    },
     stop: function() {
       this.isRunning = false;
-      return window.clearInterval(this.timerId);
-    },
-    timerCalc: function(duration) {
-        this.timer = duration;
-        this.duration = duration;
-        var _this = this;
-        this.timerId = setInterval(function() {
-          _this.minutes = parseInt(_this.timer / 60, 10);
-          _this.seconds = parseInt(_this.timer % 60, 10);
-
-          _this.minutes = _this.minutes < 10 ? "0" + _this.minutes : _this.minutes;
-          _this.seconds = _this.seconds < 10 ? "0" + _this.seconds : _this.seconds;
-
-          if (--_this.timer < 0) {
-            _this.timer = _this.duration;
-            _this.resetTimer();
-          }
-        }, 1000);
+      return clearInterval(this.timerId);
     },
     setTimer() {
       this.minutes = this.minutes < 10 ? "0" + this.minutes : this.minutes;
       this.seconds = this.seconds < 10 ? "0" + this.seconds : this.seconds;
-      this.timerId = '';
       this.timer = this.minutes * 60;
       this.duration = this.timer;
     },
-    reset: function() {
-      this.isRunning = false;
-      this.timer = 1500;
-      this.duration = 1500;
-      this.minutes = parseInt(this.timer / 60, 10);
-      this.seconds = parseInt(this.timer % 60, 10);
-      this.minutes = this.minutes < 10 ? "0" + this.minutes : this.minutes;
-      this.seconds = this.seconds < 10 ? "0" + this.seconds : this.seconds;
-      return window.clearInterval(this.timerId);
-    }
   },
   created: function() {
     this.minutes = this.minutes < 10 ? "0" + this.minutes : this.minutes;

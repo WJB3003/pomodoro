@@ -1,7 +1,6 @@
 <template>
   <div class="header">
       <h1>WillPomo</h1>
-      <h1>Settings</h1>
   </div>
 </template>
 
