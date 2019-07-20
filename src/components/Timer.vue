@@ -6,8 +6,8 @@
       <button @click="longBreakTime">Long Break</button>
     </div>
     <h1 class="time">{{minutes}} : {{seconds}}</h1>
-    <h2 @click="start" class="start">START</h2>
-    <h2 @click="stop" class="stop">STOP</h2>
+    <h2 v-if="isRunning === false" @click="start" class="start">START</h2>
+    <h2 v-else @click="stop" class="stop">STOP</h2>
   </div>
 </template>
 
