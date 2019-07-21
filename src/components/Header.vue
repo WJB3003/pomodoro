@@ -14,8 +14,8 @@ export default {
 
 <style scoped>
     .header{
-        display: flex;
-        justify-content: space-between;
-        max-width: 500px;
+        max-width: 480px;
+        display: block;
+        text-align: center;
     }
 </style>

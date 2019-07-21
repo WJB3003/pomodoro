@@ -6,8 +6,8 @@
       <button @click="longBreakTime">Long Break</button>
     </div>
     <h1 class="time">{{minutes}} : {{seconds}}</h1>
-    <h2 v-if="isRunning === false" @click="start" class="start">START</h2>
-    <h2 v-else @click="stop" class="stop">STOP</h2>
+    <button v-if="isRunning === false" @click="start" class="control">START</button>
+    <button v-else @click="stop" class="control">STOP</button>
   </div>
 </template>
 
@@ -26,19 +26,19 @@ export default {
   },
   methods: {
     pomodoroTime: function() {
-        this.stop();
+      this.stop();
       this.minutes = 25;
       this.seconds = 0;
       this.setTimer();
     },
     shortBreakTime: function() {
-        this.stop();
+      this.stop();
       this.minutes = 2;
       this.seconds = 0;
       this.setTimer();
     },
     longBreakTime: function() {
-        this.stop();
+      this.stop();
       this.minutes = 5;
       this.seconds = 0;
       this.setTimer();
@@ -62,7 +62,7 @@ export default {
 
         if (--_this.timer < 0) {
           _this.timer = _this.duration;
-          _this.reset();
+          _this.stop();
         }
       }, 1000);
     },
@@ -75,7 +75,7 @@ export default {
       this.seconds = this.seconds < 10 ? "0" + this.seconds : this.seconds;
       this.timer = this.minutes * 60;
       this.duration = this.timer;
-    },
+    }
   },
   created: function() {
     this.minutes = this.minutes < 10 ? "0" + this.minutes : this.minutes;
@@ -85,19 +85,53 @@ export default {
 </script>
 
 <style scoped>
-.sections {
-  display: flex;
-  justify-content: space-between;
+button {
+  margin-top: 10px;
+  color: white;
+  background: none;
+  height: 25px;
+  font-size: 22px;
+  border-radius: 7px;
+  text-align: center;
+  box-sizing: unset;
+  border: none;
+  outline: none;
+}
+button:hover {
+  background-color: #45b3e0;
+}
+.time {
+  font-size: 100px;
+  margin: 25px;
 }
 .timer {
-  max-width: 500px;
+  width: 480px;
   background-color: #87ceeb;
   border-radius: 10px;
+  text-align: center;
+  display: block;
 }
 .hidden {
   display: none;
 }
 .section-button:hover {
   background-color: #f3fafd;
+}
+.control {
+  margin-top: 0px;
+  margin-bottom: 10px;
+}
+
+@media screen and (min-device-width: 10px) and (max-device-width: 479px) {
+  .timer {
+    width: 100%;
+  }
+  .time {
+    margin: 2%;
+    font-size: 45px;
+  }
+  .button {
+    height: px;
+  }
 }
 </style>
